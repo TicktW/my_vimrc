@@ -1,9 +1,7 @@
 set nocompatible              " be iMproved
 filetype off                  " required!  
-
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
-
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'luochen1990/rainbow' " 彩虹括号
 "Plugin 'w0rp/ale' " 需要pylint 和 flake8支持
@@ -12,43 +10,169 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
-
+Plugin 'python-mode/python-mode'
+Plugin 'altercation/vim-colors-solarized'
+Plugin 'tomasr/molokai'
 call vundle#end()
 filetype plugin indent on  
-
 " plugin ale set
+" *********************************
+" *********************************
+" *********************************
 " pluginle_sign_column_always = 1
- let g:ale_set_highlights = 0
+" let g:ale_set_highlights = 0
 " "自定义error和warning图标
-let g:ale_sign_error = '✗'
-let g:ale_sign_warning = '⚡'
+"let g:ale_sign_error = '✗'
+"let g:ale_sign_warning = '⚡'
 " "在vim自带的状态栏中整合ale
 " let g:ale_statusline_format = ['✗ %d', '⚡ %d', '✔ OK']
 " "显示Linter名称,出错或警告等相关信息
- let g:ale_echo_msg_error_str = 'E'
- let g:ale_echo_msg_warning_str = 'W'
- let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+" let g:ale_echo_msg_error_str = 'E'
+" let g:ale_echo_msg_warning_str = 'W'
+" let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 " "普通模式下，sp前往上一个错误或警告，sn前往下一个错误或警告
 " nmap sp <Plug>(ale_previous_wrap)
 " nmap sn <Plug>(ale_next_wrap)
 " "<Leader>s触发/关闭语法检查
- nmap <Leader>s :ALEToggle<CR>
+" nmap <Leader>s :ALEToggle<CR>
 " "<Leader>d查看错误或警告的详细信息
- nmap <Leader>d :ALEDetail<CR>tagbar set
+" nmap <Leader>d :ALEDetail<CR>tagbar set
 " plugin ale end
-
+" *********************************
+" *********************************
+" *********************************
 nmap <F9> :Tagbar<CR>
 let g:tagbar_width = 20
 " pulgin tagbar end
-
+"
+" *********************************
 " pulgin Nerdtree set
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+" 是否显示隐藏文件
+let NERDTreeShowHidden=1
+" 设置宽度
+let NERDTreeWinSize=21
+" 在终端启动vim时，共享NERDTree
+let g:nerdtree_tabs_open_on_console_startup=1
+" 忽略一下文件的显示
+let NERDTreeIgnore=['\.pyc','\~$','\.swp']
+" 显示书签列表
+let NERDTreeShowBookmarks=1
 nmap <F3> :NERDTreeToggle<CR>
 " pulgin Nerdtree end
-
+" *********************************
+"
+" *********************************
 " pulgin rainbow
 let g:rainbow_active = 1 "0 if you want to enable it later via
 " pulgin rainbow end
+" *********************************
+"
+" 主题
+syntax enable
+"set background=dark
+colorscheme solarized
+"colorscheme molokai
+"colorscheme desert
+"colorscheme morning
+"colorscheme ron
+"colorscheme industry
+"
+"
+" airline 设置
+"*********************************************************
+set laststatus=2 " 设置为永久显示airline 
+"let g:airline_theme='molokai'
+"let g:airline_theme='solarized'
+let g:airline_theme='cool'
+let g:airline#extensions#tabline#enabled = 1 " 使用tab主题
+let g:airline#extensions#tabline#buffer_nr_show = 1
+"*********************************************************
 
+
+"*********************************************************
+" python mode设置
+"python-mode
+""开启警告
+let g:pymode_warnings = 0
+"保存文件时自动删除无用空格
+let g:pymode_trim_whitespaces = 1
+let g:pymode_options = 1
+""显示允许的最大长度的列
+let g:pymode_options_colorcolumn = 1
+"设置QuickFix窗口的最大，最小高度
+"let g:pymode_quickfix_minheight = 3
+"let g:pymode_quickfix_maxheight = 10
+""使用python3
+let g:pymode_python = 'python3'
+"使用PEP8风格的缩进
+"let g:pymode_indent = 1
+""取消代码折叠
+let g:pymode_folding = 0
+"开启python-mode定义的移动方式
+"let g:pymode_motion = 1
+""启用python-mode内置的python文档，使用K进行查找
+let g:pymode_doc = 1
+let g:pymode_doc_bind = 'K'
+"自动检测并启用virtualenv
+let g:pymode_virtualenv = 1
+""不使用python-mode运行python代码
+let g:pymode_run = 0
+"let g:pymode_run_bind = '<Leader>r'
+""不使用python-mode设置断点
+let g:pymode_breakpoint = 0
+"let g:pymode_breakpoint_bind = '<leader>b'
+""启用python语法检查
+let g:pymode_lint = 1
+"修改后保存时进行检查
+"let g:pymode_lint_on_write = 0
+""编辑时进行检查
+let g:pymode_lint_on_fly = 0
+let g:pymode_lint_checkers = ['pyflakes', 'pep8']
+"发现错误时不自动打开QuickFix窗口
+"let g:pymode_lint_cwindow = 0
+""侧边栏不显示python-mode相关的标志
+let g:pymode_lint_signs = 0
+"let g:pymode_lint_todo_symbol = 'WW'
+""let g:pymode_lint_comment_symbol = 'CC'
+"let g:pymode_lint_visual_symbol = 'RR'
+""let g:pymode_lint_error_symbol = 'EE'
+"let g:pymode_lint_info_symbol = 'II'
+""let g:pymode_lint_pyflakes_symbol = 'FF'
+"启用重构
+"let g:pymode_rope = 1
+""不在父目录下查找.ropeproject，能提升响应速度
+let g:pymode_rope_lookup_project = 0
+"光标下单词查阅文档
+"let g:pymode_rope_show_doc_bind = '<C-c>d'
+""项目修改后重新生成缓存
+let g:pymode_rope_regenerate_on_write = 1
+"开启补全，并设置<C-Tab>为默认快捷键
+let g:pymode_rope_completion = 1
+let g:pymode_rope_complete_on_dot = 1
+let g:pymode_rope_completion_bind = '<C-p>p'
+""<C-c>g跳转到定义处，同时新建竖直窗口打开
+let g:pymode_rope_goto_definition_bind = '<C-c>g'
+let g:pymode_rope_goto_definition_cmd = 'vnew'
+"重命名光标下的函数，方法，变量及类名
+let g:pymode_rope_rename_bind = '<C-c>rn'
+""重命名光标下的模块或包
+let g:pymode_rope_rename_module_bind = '<C-c>r1r'
+"开启python所有的语法高亮
+let g:pymode_syntax = 1
+let g:pymode_syntax_all = 1
+""高亮缩进错误
+let g:pymode_syntax_indent_errors = g:pymode_syntax_all
+"高亮空格错误
+let g:pymode_syntax_space_errors = g:pymode_syntax_all
+"
+"end of python mode
+"*********************************************************
+
+
+set t_Co=256 
 let mapleader="\<Space>"
 set sw=4
 set ts=4
@@ -70,7 +194,6 @@ au FileType scale setlocal dict+=~/.vim/dict/scale.dict
 au FileType javascript setlocal dict+=~/.vim/dict/javascript.dict
 au FileType html setlocal dict+=~/.vim/dict/javascript.dict
 au FileType html setlocal dict+=~/.vim/dict/css.dict
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 显示相关  
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -134,7 +257,6 @@ set viminfo+=!
 " 带有如下符号的单词不要被换行分割
 set iskeyword+=_,$,@,%,#,-
 " 字符间插入的像素行数目
-
 "markdown配置
 au BufRead,BufNewFile *.{md,mdown,mkd,mkdn,markdown,mdwn}   set filetype=mkd
 au BufRead,BufNewFile *.{go}   set filetype=go
@@ -144,12 +266,9 @@ nmap md :!~/.vim/markdown.pl % > %.html <CR><CR>
 nmap fi :!firefox %.html & <CR><CR>
 nmap \ \cc
 vmap \ \cc
-
 "将tab替换为空格
 nmap tt :%s/\t/    /g<CR>
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 """""新文件标题
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "新建.c,.h,.sh,.java文件，自动插入文件头 
@@ -167,13 +286,10 @@ func SetTitle()
         call setline(4,"    pass")
         call setline(5,"if __name__ == '__main__':")
         call setline(6,"    main()")
-
-
     elseif &filetype == 'ruby'
         call setline(1,"#!/usr/bin/env ruby")
         call append(line("."),"# encoding: utf-8")
 	    call append(line(".")+1, "")
-
 "    elseif &filetype == 'mkd'
 "        call setline(1,"<head><meta charset=\"UTF-8\"></head>")
 	else 
@@ -206,8 +322,6 @@ func SetTitle()
 	"新建文件后，自动定位到文件末尾
 endfunc 
 autocmd BufNewFile * normal G
-
-
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "键盘命令
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -266,7 +380,6 @@ func! CompileRunGcc()
         exec "!firefox %.html &"
 	endif
 endfunc
-
 "C,C++的调试
 map <F7> :call Rungdb()<CR>
 func! Rungdb()
@@ -278,12 +391,8 @@ func! Rungdb()
         :!python3 -m pudb 
     endif
 endfunc
-
-
 "代码格式优化化
-
 map <F6> :call FormartSrc()<CR><CR>
-
 "定义FormartSrc()
 func FormartSrc()
     exec "w"
@@ -308,7 +417,6 @@ func FormartSrc()
     exec "e! %"
 endfunc
 "结束定义FormartSrc
-
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 ""实用设置
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -318,7 +426,6 @@ if has("autocmd")
           \   exe "normal g`\"" |
           \ endif
 endif
-
 " 设置当文件被改动时自动载入
 set autoread
 "代码补全 
@@ -346,7 +453,6 @@ set nobackup
 set noswapfile
 "搜索忽略大小写
 set ignorecase
-
 set linespace=0
 " 增强模式中的命令行自动完成操作
 set wildmenu
@@ -358,29 +464,30 @@ set whichwrap+=<,>,h,l
 set mouse=a
 set selection=exclusive
 set selectmode=mouse,key
+" 启动的时候不显示那个援助索马里儿童的提示
+set shortmess=atI
 " 通过使用: commands命令，告诉我们文件的哪一行被改变过
 set report=0
 " 在被分割的窗口间显示空白，便于阅读
 set fillchars=vert:\ ,stl:\ ,stlnc:\
+
 " 高亮显示匹配的括号
 set showmatch
+
 " 匹配括号高亮的时间（单位是十分之一秒）
 set matchtime=1
+
 " 光标移动到buffer的顶部和底部时保持3行距离
 set scrolloff=3
 filetype plugin indent on 
 "打开文件类型检测, 加了这句才可以用智能补全
-
 " 中文支持
 set termencoding=utf-8
 set encoding=utf8
 set fileencodings=utf8,ucs-bom,gbk,cp936,gb2312,gb18030
 " 中文支持结束
-
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc,*.png,*.jpg,*.gif     " MacOSX/Linux
 set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe,*.pyc,*.png,*.jpg,*.gif  " Windows
-
 "这个是我喜欢的，一旦一行的字符超出80个的话就把那些字符的背景设为红色
-highlight OverLength ctermbg=red ctermfg=white guibg=#592929 
-match OverLength /\%81v.\+/
-
+"highlight OverLength ctermbg=red ctermfg=white guibg=#592929 
+"match OverLength /\%81v.\+/
